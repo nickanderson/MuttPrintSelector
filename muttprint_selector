@@ -1,0 +1,13 @@
+#!/bin/bash
+i=0
+for element in $(lpstat -a | awk '{print $1}')
+do
+        ALL_PRINTERS[$i]=$element
+        ALL_PRINTERS[$i+1]="|"
+        echo $i
+        i=$(expr $i + 2)
+done
+
+PRINTER=$(dialog --menu "Please select the printer you would like to print to" 10 55 5 ${ALL_PRINTERS[@]} --stdout) 
+sed -ie "s/^PRINTER.*/PRINTER=\"$PRINTER\"/" /home/cmdln/.muttprintrc
+echo $PRINTER
